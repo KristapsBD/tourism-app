@@ -1,5 +1,6 @@
-import './App.css';
-import React, {useEffect, useState} from 'react';
+import { useState, useEffect } from 'react'
+
+import './App.css'
 
 function App() {
     const [info, setInfo] = useState('');
@@ -7,7 +8,7 @@ function App() {
 
     useEffect(() => {
         setLoading(true);
-        fetch('test')
+        fetch('/api/test')
             .then(response => response.text())
             .then(data => {
                 setInfo(data);
@@ -19,15 +20,15 @@ function App() {
         return <p>Loading...</p>;
     }
 
-    return (
-        <div className="App">
-            <header className="App-header">
-                <p>
-                    Tourism app {info}
-                </p>
-            </header>
-        </div>
-    );
+  return (
+      <div className="App">
+          <header className="App-header">
+              <p>
+                  Tourism app {info}
+              </p>
+          </header>
+      </div>
+  )
 }
 
-export default App;
+export default App

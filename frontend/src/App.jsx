@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import './App.css'
+
 
 function App() {
     const [info, setInfo] = useState('');
@@ -23,7 +23,7 @@ function App() {
   return (
       <div className="App">
           <header className="App-header">
-              <p>
+              <p className="text-3xl font-bold underline">
                   Tourism app {info}
               </p>
           </header>

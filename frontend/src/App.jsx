@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import MapTest from "./views/MapTest.jsx";
 
 
 
@@ -27,6 +28,7 @@ function App() {
                   Tourism app {info}
               </p>
           </header>
+          <MapTest/>
       </div>
   )
 }

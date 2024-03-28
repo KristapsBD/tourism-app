@@ -8,7 +8,7 @@ export default function MapRenderer(){
                 width: '600px',
                 height: '600px'
             }}>
-                <Map mapId={'1a45c890139756b1'}>
+                <Map mapId={import.meta.env.VITE_MAP_ID}>
                     <Directions/>
                 </Map>
             </div>

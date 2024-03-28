@@ -12,6 +12,7 @@
   "proxy": "http://localhost:8080/",
   "dependencies": {
     "@vis.gl/react-google-maps": "^0.8.1",
+    "dotenv": "^16.4.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

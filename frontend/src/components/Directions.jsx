@@ -18,7 +18,7 @@ export default function Directions(){
             .then(res => res.json())
             .then(data => {
                 const route = data;
-
+                console.log(route)
                 const origin = { lat: route.locations[0].latitude, lng: route.locations[0].longitude };
                 const destination = { lat: route.locations[route.locations.length-1].latitude, lng: route.locations[route.locations.length-1].longitude }; // Sigulda Castle
 

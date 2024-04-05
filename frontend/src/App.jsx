@@ -1,35 +1,19 @@
-import { useState, useEffect } from 'react'
+import {useState, useEffect, useContext} from 'react'
 import MapTest from "./views/MapTest.jsx";
+import {AuthContext} from "./context/AuthContext.jsx";
+import {Navigate, Route, Routes} from "react-router-dom";
+import Login from "./views/Login.jsx";
+import Home from "./views/Home.jsx";
 
 
 
 function App() {
-    const [info, setInfo] = useState('');
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        setLoading(true);
-        fetch('/api/test')
-            .then(response => response.text())
-            .then(data => {
-                setInfo(data);
-                setLoading(false);
-            })
-    }, [setLoading]);
-
-    if (loading) {
-        return <p>Loading...</p>;
-    }
-
+    const {currentUser} = useContext(AuthContext)
   return (
-      <div className="App">
-          <header className="App-header">
-              <p className="text-3xl font-bold underline">
-                  Tourism app {info}
-              </p>
-          </header>
-          <MapTest/>
-      </div>
+      <Routes>
+          <Route path="/login" element={<Login/>}/>
+          <Route path={'/'} element={currentUser?<Home/>:<Navigate to="/login"/>}/>
+      </Routes>
   )
 }
 

@@ -1,72 +1,52 @@
-import { createContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, {createContext, useContext, useState, useEffect} from 'react'
 
-export const AuthContext = createContext({
-    currentUser: null,
-    setCurrentUser: () => {},
-    signIn: async (email, password) => {},
-    signOut: () => {}
-});
+const AuthContext = createContext()
 
-export const AuthProvider = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
+function AuthProvider({children}) {
+    const [user, setUser] = useState(null)
 
     useEffect(() => {
-        const checkAuthState = async () => {
-            try {
-                const res = await axios.get('/api/user');
-                const user = res.data;
-                if (user) {
-                    setCurrentUser(user);
-                }
-                setLoading(false);
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-                setLoading(false);
-            }
-        };
+        const storedUser = JSON.parse(localStorage.getItem('user'))
+        setUser(storedUser)
+    }, [])
 
-        checkAuthState();
-    }, []);
+    const getUser = () => {
+        return JSON.parse(localStorage.getItem('user'))
+    }
 
-    const signIn = async (email, password) => {
-        try {
-            const userData = { email, password };
-            const res = await axios.post('/api/user/login', userData);
-            if (res) {
-                setCurrentUser(res.data);
-                navigate('/');
-            } else {
-                console.log("Something went wrong");
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    };
+    const userIsAuthenticated = () => {
+        return localStorage.getItem('user') !== null
+    }
 
-    const signOut = () => {
-        axios.get('/api/user/logout');
-        setCurrentUser(null);
-        navigate('/');
-    };
+    const userLogin = user => {
+        localStorage.setItem('user', JSON.stringify(user))
+        setUser(user)
+    }
 
-    const value = {
-        currentUser,
-        setCurrentUser,
-        signIn,
-        signOut
-    };
+    const userLogout = () => {
+        localStorage.removeItem('user')
+        setUser(null)
+    }
 
-    if (loading) {
-        return <div>Loading...</div>;
+    const contextValue = {
+        user,
+        getUser,
+        userIsAuthenticated,
+        userLogin,
+        userLogout,
     }
 
     return (
-        <AuthContext.Provider value={value}>
+        <AuthContext.Provider value={contextValue}>
             {children}
         </AuthContext.Provider>
-    );
-};
+    )
+}
+
+export default AuthContext
+
+export function useAuth() {
+    return useContext(AuthContext)
+}
+
+export {AuthProvider}

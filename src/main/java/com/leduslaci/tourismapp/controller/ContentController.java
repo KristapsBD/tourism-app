@@ -24,6 +24,11 @@ public class ContentController {
         return "user";
     }
 
+    @GetMapping("/register")
+    public String register() {
+        return "register";
+    }
+
     // TODO REMOVE BEFORE PROD
     @CrossOrigin
     @GetMapping("/test")

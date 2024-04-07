@@ -1,4 +1,4 @@
 package com.leduslaci.tourismapp.rest.dto;
 
-public class AuthResponse {
+public record AuthResponse(Long id, String name, String role) {
 }

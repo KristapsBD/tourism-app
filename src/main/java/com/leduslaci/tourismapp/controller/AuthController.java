@@ -1,34 +1,63 @@
 package com.leduslaci.tourismapp.controller;
 
-import com.leduslaci.tourismapp.models.Route;
-import com.leduslaci.tourismapp.repositories.RouteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.security.authentication.AuthenticationManager;
-import com.leduslaci.tourismapp.repositories.CustomUserRepository;
+import com.leduslaci.tourismapp.exception.DuplicatedUserInfoException;
 
+import com.leduslaci.tourismapp.models.User;
+import com.leduslaci.tourismapp.rest.dto.AuthResponse;
+import com.leduslaci.tourismapp.rest.dto.LoginRequest;
+import com.leduslaci.tourismapp.rest.dto.SignUpRequest;
+import com.leduslaci.tourismapp.security.WebSecurityConfig;
+import com.leduslaci.tourismapp.service.UserService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
+
+@RequiredArgsConstructor
 @RestController
-@RequestMapping(path = "/auth")
-public class PageController {
+@RequestMapping("/auth")
+public class AuthController {
 
-    @Autowired
-    private CustomUserRepository CustomUserRepo;
+    private final UserService userService;
 
-
-    @GetMapping("/login")
-    public String handleLogin(String email, String password) {
-        return CustomUserRepo.findByEmail(email);
-        return null;
+    @PostMapping("/authenticate")
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+        Optional<User> userOptional = userService.validUsernameAndPassword(loginRequest.getUsername(), loginRequest.getPassword());
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return ResponseEntity.ok(new AuthResponse(user.getId(), user.getName(), user.getRole()));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-//    @GetMapping("/auth/login")
-//    @CrossOrigin(origins = "http://localhost:3000")
-//    public String handleLogin() {
-//        return "custom_login";
-//    }
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/signup")
+    public AuthResponse signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
+        if (userService.hasUserWithUsername(signUpRequest.getUsername())) {
+            throw new DuplicatedUserInfoException(String.format("Username %s is already been used", signUpRequest.getUsername()));
+        }
+        if (userService.hasUserWithEmail(signUpRequest.getEmail())) {
+            throw new DuplicatedUserInfoException(String.format("Email %s is already been used", signUpRequest.getEmail()));
+        }
+
+        User user = userService.saveUser(createUser(signUpRequest));
+        return new AuthResponse(user.getId(), user.getName(), user.getRole());
+    }
+
+    private User createUser(SignUpRequest signUpRequest) {
+        User user = new User();
+        user.setUsername(signUpRequest.getUsername());
+        user.setPassword(signUpRequest.getPassword());
+        user.setName(signUpRequest.getName());
+        user.setEmail(signUpRequest.getEmail());
+        user.setRole(WebSecurityConfig.USER);
+        return user;
+    }
 }

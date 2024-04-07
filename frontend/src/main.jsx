@@ -7,13 +7,13 @@ import {BrowserRouter} from "react-router-dom";
 import {AuthProvider} from "./context/AuthContext.jsx";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-      <BrowserRouter>
-          <AuthProvider>
-              <APIProvider apiKey={import.meta.env.VITE_API_KEY}>
-                  <App />
-              </APIProvider>
-          </AuthProvider>
-      </BrowserRouter>
-  </React.StrictMode>,
+    <React.StrictMode>
+        <BrowserRouter>
+            <AuthProvider>
+                <APIProvider apiKey={import.meta.env.VITE_API_KEY}>
+                    <App/>
+                </APIProvider>
+            </AuthProvider>
+        </BrowserRouter>
+    </React.StrictMode>,
 )

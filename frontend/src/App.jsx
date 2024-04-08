@@ -1,34 +1,20 @@
-import { useState, useEffect } from 'react'
 
+import MapTest from "./views/MapTest.jsx";
+import {useAuth} from "./context/AuthContext.jsx";
+import {Navigate, Route, Routes} from "react-router-dom";
+import Login from "./views/Login.jsx";
+import Home from "./views/Home";
 
 
 function App() {
-    const [info, setInfo] = useState('');
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        setLoading(true);
-        fetch('/api/test')
-            .then(response => response.text())
-            .then(data => {
-                setInfo(data);
-                setLoading(false);
-            })
-    }, [setLoading]);
-
-    if (loading) {
-        return <p>Loading...</p>;
-    }
-
-  return (
-      <div className="App">
-          <header className="App-header">
-              <p className="text-3xl font-bold underline">
-                  Tourism app {info}
-              </p>
-          </header>
-      </div>
-  )
+    const Auth = useAuth()
+    return (
+            <Routes>
+                <Route path='/login' element={<Login/>}/>
+                <Route path={'/'} element={Auth.userIsAuthenticated() ? <Home/> : <Navigate to="/login"/>}/>
+                <Route path={'/map'} element={Auth.userIsAuthenticated() ? <MapTest/>:<Navigate to="/login"/>}/>
+            </Routes>
+    )
 }
 
 export default App

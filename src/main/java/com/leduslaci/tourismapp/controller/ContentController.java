@@ -8,12 +8,28 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @SpringBootApplication
 @RestController
-public class ClientController {
+public class ContentController {
     @GetMapping("/")
-    public String index() {
-        return "index";
+    public String home() {
+        return "home";
     }
 
+    @GetMapping("/admin")
+    public String admin() {
+        return "admin";
+    }
+
+    @GetMapping("/user")
+    public String user() {
+        return "user";
+    }
+
+    @GetMapping("/register")
+    public String register() {
+        return "register";
+    }
+
+    // TODO REMOVE BEFORE PROD
     @CrossOrigin
     @GetMapping("/test")
     public String test(@RequestParam(value = "name", defaultValue = "springboot") String name) {

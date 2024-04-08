@@ -12,14 +12,10 @@ Go to the project directory
   cd tourism-app
 ```
 
-Install dependencies
-
-```bash
-  npm install
-```
 
 Start the server on http://localhost:8080 ( run src/main/java/com/leduslaci/tourismapp/TourismAppApplication.java ).
-Before continuing verify that http://localhost:8080/test returns "Hello from springboot"
+(Right top corner the green triangle(for Roberto))
+
 
 
 Go to the frontend directory
@@ -40,4 +36,4 @@ Start React frontend
   npm run dev
 ```
 
-Go to http://localhost:3000 and verify that output is "Tourism app Hello from springboot"
+Go to http://localhost:3000 and if it is the first time you should be redirected to /login

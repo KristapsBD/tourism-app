@@ -1,11 +1,14 @@
 import {useMap, useMapsLibrary} from "@vis.gl/react-google-maps";
 import {useEffect, useState} from "react";
+import {tourismApi} from "./misc/TourismApi.jsx";
+import {useAuth} from "../context/AuthContext.jsx";
 
 export default function Directions(){
     const map = useMap()
     const routesLib = useMapsLibrary("routes")
     const [directionsService, setDirectionsService] = useState(null)
     const [directionsRenderer, setDirectionsRenderer] = useState(null)
+    const Auth = useAuth()
     useEffect(()=>{
         if(!routesLib || !map) return
         setDirectionsService(new routesLib.DirectionsService())
@@ -13,8 +16,8 @@ export default function Directions(){
     }, [routesLib, map])
     useEffect(() => {
         if (!directionsRenderer || !directionsService) return;
-
-        fetch('/api/route/get/1')
+            console.log(Auth.user)
+            tourismApi.getRoute(1, Auth.user)
             .then(res => res.json())
             .then(data => {
                 const route = data;

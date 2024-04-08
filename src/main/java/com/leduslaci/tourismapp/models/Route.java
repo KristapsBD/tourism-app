@@ -18,10 +18,12 @@ public class Route {
             joinColumns = @JoinColumn(name = "route_id"),
             inverseJoinColumns = @JoinColumn(name = "location_id"))
     private List<Location> locations;
-
+    public Route(String name){
+        this.name = name;
+    }
     public Integer getId() {
         return id;
-    }
+    };
 
     public void setId(Integer id) {
         this.id = id;

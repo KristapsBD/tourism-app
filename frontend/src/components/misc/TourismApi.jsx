@@ -10,7 +10,8 @@ export const tourismApi = {
     deleteUser,
     getBooks,
     deleteBook,
-    addBook
+    addBook,
+    getRoute
 }
 
 function authenticate(username, password) {
@@ -68,6 +69,14 @@ function addBook(user, book) {
     })
 }
 
+function getRoute(id, user){
+    return instance.get(`/route/get/${id}`, {
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': basicAuth(user)
+        }
+    })
+}
 // -- Axios
 
 const instance = axios.create({
@@ -77,5 +86,5 @@ const instance = axios.create({
 // -- Helper functions
 
 function basicAuth(user) {
-    return `Basic ${user.authdata}`
+    return `Basic ${user.authData}`
 }

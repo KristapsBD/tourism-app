@@ -16,12 +16,12 @@ export default function Directions(){
     }, [routesLib, map])
     useEffect(() => {
         if (!directionsRenderer || !directionsService) return;
-            console.log(Auth.user)
             tourismApi.getRoute(1, Auth.user)
-            .then(res => res.json())
+            .then(res => {
+                return res.data
+            })
             .then(data => {
                 const route = data;
-                console.log(route)
                 const origin = { lat: route.locations[0].latitude, lng: route.locations[0].longitude };
                 const destination = { lat: route.locations[route.locations.length-1].latitude, lng: route.locations[route.locations.length-1].longitude }; // Sigulda Castle
 

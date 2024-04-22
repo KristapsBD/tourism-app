@@ -25,5 +25,9 @@ public class RouteController {
 
         return routeRepo.findById(id).orElse(null);
     }
-
+    @PostMapping("/create")
+    public Route createRoute(@RequestBody Route route) {
+        //return routeRepo.save(route);
+        return route;
+    }
 }

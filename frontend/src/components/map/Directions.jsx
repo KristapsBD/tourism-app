@@ -1,7 +1,7 @@
 import {useMap, useMapsLibrary} from "@vis.gl/react-google-maps";
 import {useEffect, useState} from "react";
-import {tourismApi} from "./misc/TourismApi.jsx";
-import {useAuth} from "../context/AuthContext.jsx";
+import {tourismApi} from "../misc/TourismApi.jsx";
+import {useAuth} from "../../context/AuthContext.jsx";
 
 export default function Directions({id}){
     console.log("id", id)

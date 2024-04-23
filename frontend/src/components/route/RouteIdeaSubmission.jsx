@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { tourismApi } from "../components/misc/TourismApi.jsx";
-import {Route} from "../models/Route.js";
-//TODO
-//Jāsafixo, lai dati aiziet uz datubāzi
-export default function RouteCreate() {
+import { tourismApi } from "../misc/TourismApi.jsx";
+
+export default function RouteIdeaSubmission() {
     const [formFields, setFormFields] = useState({
         routeName: "",
         routeDescription: "",
@@ -53,29 +51,11 @@ export default function RouteCreate() {
         }));
     };
 
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     try {
-    //         const response = await tourismApi.createRoute(formFields);
-    //         console.log("Route created successfully:", response);
-    //         setFormFields({
-    //             routeName: "",
-    //             routeDescription: "",
-    //             coordinates: [{ latitude: "", longitude: "" }]
-    //         });
-    //     } catch (error) {
-    //         console.error('Form submission failed:', error);
-    //     }
-    // };
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Prepare the coordinates for submission
-            const coordinates = formFields.coordinates.map(coord => [coord.latitude, coord.longitude]);
-            //await Route.createRoute(formFields.routeName, formFields.routeDescription, coordinates);
-            const route = new Route(formFields.routeName, formFields.routeDescription, coordinates);
-            route.displayInfo();
-            // Reset the form fields
+            const response = await tourismApi.submitRouteIdea(formFields);
+            console.log("Route idea submitted successfully:", response);
             setFormFields({
                 routeName: "",
                 routeDescription: "",
@@ -87,12 +67,12 @@ export default function RouteCreate() {
     };
 
     return (
-        <div className="flex h-screen justify-center items-center bg-green-600">
-            <div className="max-w-lg bg-white p-8 rounded-lg shadow-md overflow-y-auto" style={{ maxHeight: '80vh' }}>
-                <h1 className="text-2xl mb-4 text-center">Maršruta izveide</h1>
+        <div className="flex h-screen justify-center items-center bg-gray-200">
+            <div className="max-w-lg bg-white p-8 rounded-lg shadow-md">
+                <h1 className="text-2xl mb-4 text-center">Submit Route Idea</h1>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label htmlFor="routeName" className="block mb-1">Maršruta nosaukums</label>
+                        <label htmlFor="routeName" className="block mb-1">Route Name</label>
                         <input
                             type="text"
                             id="routeName"
@@ -104,7 +84,7 @@ export default function RouteCreate() {
                         />
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="routeDescription" className="block mb-1">Maršruta skaidrojums</label>
+                        <label htmlFor="routeDescription" className="block mb-1">Route Description</label>
                         <textarea
                             id="routeDescription"
                             name="routeDescription"
@@ -115,7 +95,7 @@ export default function RouteCreate() {
                         ></textarea>
                     </div>
                     <div className="mb-4">
-                        <label className="block mb-1">Koordinātes</label>
+                        <label className="block mb-1">Coordinates</label>
                         {formFields.coordinates.map((coordinate, index) => (
                             <div key={index} className="flex items-center mb-2">
                                 <input
@@ -147,7 +127,7 @@ export default function RouteCreate() {
                             </button>
                         </div>
                     </div>
-                    <div className="h-6" style={{ color: formErrors.errorMsg ? "red" : "transparent" }}>
+                    <div className="h-6" style={{color: formErrors.errorMsg ? "red" : "transparent"}}>
                         {formErrors.errorMsg || " "}
                     </div>
                     <button
@@ -155,11 +135,10 @@ export default function RouteCreate() {
                         disabled={!isSubmittable}
                         className="w-full mt-6 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md focus:outline-none"
                     >
-                        Submit
+                        Submit Route Idea
                     </button>
                 </form>
             </div>
         </div>
     );
-
 }

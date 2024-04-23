@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { tourismApi } from "../misc/TourismApi.jsx";
 import {Route} from "../../models/Route.js";
+import {useAuth} from "../../context/AuthContext.jsx";
 //TODO
 //Jāsafixo, lai dati aiziet uz datubāzi
 export default function RouteCreate() {
+
+    const Auth = useAuth()
     const [formFields, setFormFields] = useState({
         routeName: "",
         routeDescription: "",
-        coordinates: [{ latitude: "", longitude: "" }]
+        coordinates: [{ name: "", latitude: "", longitude: "" }]
     });
     const [formErrors, setFormErrors] = useState({
         errorMsg: "",
@@ -49,7 +52,7 @@ export default function RouteCreate() {
     const handleAddCoordinate = () => {
         setFormFields((prev) => ({
             ...prev,
-            coordinates: [...prev.coordinates, { latitude: "", longitude: "" }]
+            coordinates: [...prev.coordinates, { name: "", latitude: "", longitude: "" }]
         }));
     };
 
@@ -58,18 +61,19 @@ export default function RouteCreate() {
         try {
             // Prepare the coordinates for submission
             const coordinates = formFields.coordinates.map(coord => ({
+                name: coord.name,
                 latitude: coord.latitude,
                 longitude: coord.longitude
             }));
             //await Route.createRoute(formFields.routeName, formFields.routeDescription, coordinates);
             const route = new Route(formFields.routeName, formFields.routeDescription, coordinates);
             route.displayInfo();
-            await route.createNew();
+            await route.createNew(Auth.user);
             // Reset the form fields
             setFormFields({
                 routeName: "",
                 routeDescription: "",
-                coordinates: [{ latitude: "", longitude: "" }]
+                coordinates: [{ name: "", latitude: "", longitude: "" }]
             });
         } catch (error) {
             console.error('Form submission failed:', error);
@@ -110,11 +114,19 @@ export default function RouteCreate() {
                             <div key={index} className="flex items-center mb-2">
                                 <input
                                     type="text"
+                                    name="name"
+                                    placeholder="Location name"
+                                    value={coordinate.name}
+                                    onChange={(e) => handleCoordinateChange(e, index)}
+                                    className="w-1/3 px-3 py-2 border rounded-md focus:outline-none"
+                                />
+                                <input
+                                    type="text"
                                     name="latitude"
                                     placeholder="Latitude"
                                     value={coordinate.latitude}
                                     onChange={(e) => handleCoordinateChange(e, index)}
-                                    className="w-1/2 px-3 py-2 border rounded-md focus:outline-none"
+                                    className="w-1/3 px-3 py-2 border rounded-md focus:outline-none"
                                 />
                                 <input
                                     type="text"
@@ -122,7 +134,7 @@ export default function RouteCreate() {
                                     placeholder="Longitude"
                                     value={coordinate.longitude}
                                     onChange={(e) => handleCoordinateChange(e, index)}
-                                    className="w-1/2 px-3 py-2 border rounded-md focus:outline-none"
+                                    className="w-1/3 px-3 py-2 border rounded-md focus:outline-none"
                                 />
                             </div>
                         ))}
@@ -133,7 +145,7 @@ export default function RouteCreate() {
                                 onClick={handleAddCoordinate}
                                 className="ml-2 bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded-md focus:outline-none"
                             >
-                                +
+                            +
                             </button>
                         </div>
                     </div>

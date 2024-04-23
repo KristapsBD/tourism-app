@@ -81,11 +81,12 @@ function getRoute(id, user){
     })
 }
 ///TODO
-// nez cik te ir pareizi
-function createRoute(routeData) {
+// man nestrādāja tā rindiņa ar 'Authorization': basicAuth(user) hvz
+function createRoute(routeData, user) {
     return instance.post('/route/create', routeData, {
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': basicAuth(user)
         }
     });
 }

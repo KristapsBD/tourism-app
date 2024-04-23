@@ -2,8 +2,7 @@ import { useState } from "react";
 import { tourismApi } from "../misc/TourismApi.jsx";
 import {Route} from "../../models/Route.js";
 import {useAuth} from "../../context/AuthContext.jsx";
-//TODO
-//Jāsafixo, lai dati aiziet uz datubāzi
+
 export default function RouteCreate() {
 
     const Auth = useAuth()
@@ -65,7 +64,6 @@ export default function RouteCreate() {
                 latitude: coord.latitude,
                 longitude: coord.longitude
             }));
-            //await Route.createRoute(formFields.routeName, formFields.routeDescription, coordinates);
             const route = new Route(formFields.routeName, formFields.routeDescription, coordinates);
             route.displayInfo();
             await route.createNew(Auth.user);

@@ -1,11 +1,11 @@
-import RouteUpdate from "../components/RouteUpdate.jsx";
-import RouteCreate from "../components/RouteCreate.jsx";
-import TaskCreate from "../components/TaskCreate.jsx";
-import TaskUpdate from "../components/TaskUpdate.jsx";
-import RouteIdeaSubmission from "../components/RouteIdeaSubmission.jsx";
-import TaskIdeaSubmission from "../components/TaskIdeaSubmission.jsx";
-import TaskAnswer from "../components/TaskAnswer.jsx";
-import GameTimeForm from "../components/GameTime.jsx";
+import RouteUpdate from "../components/route/RouteUpdate.jsx";
+import RouteCreate from "../components/route/RouteCreate.jsx";
+import TaskCreate from "../components/task/TaskCreate.jsx";
+import TaskUpdate from "../components/task/TaskUpdate.jsx";
+import RouteIdeaSubmission from "../components/route/RouteIdeaSubmission.jsx";
+import TaskIdeaSubmission from "../components/task/TaskIdeaSubmission.jsx";
+import TaskAnswer from "../components/task/TaskAnswer.jsx";
+import GameTimeForm from "../components/game/GameTime.jsx";
 
 export default function kgzTest(){
     return (

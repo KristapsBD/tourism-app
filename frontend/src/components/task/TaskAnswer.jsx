@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { tourismApi } from "./misc/TourismApi.jsx";
+import { tourismApi } from "../misc/TourismApi.jsx";
 
 export default function TaskAnswer() {
     const [formFields, setFormFields] = useState({

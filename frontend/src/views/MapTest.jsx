@@ -1,4 +1,4 @@
-import MapRenderer from "../components/MapRenderer.jsx";
+import MapRenderer from "../components/map/MapRenderer.jsx";
 
 export default function MapTest(){
     return (

@@ -11,7 +11,10 @@ export const tourismApi = {
     getBooks,
     deleteBook,
     addBook,
-    getRoute
+    getRoute,
+
+    //
+    createRoute
 }
 
 function authenticate(username, password) {
@@ -76,6 +79,15 @@ function getRoute(id, user){
             'Authorization': basicAuth(user)
         }
     })
+}
+///TODO
+// nez cik te ir pareizi
+function createRoute(routeData) {
+    return instance.post('/route/create', routeData, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
 }
 // -- Axios
 

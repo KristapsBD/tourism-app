@@ -53,28 +53,18 @@ export default function RouteCreate() {
         }));
     };
 
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     try {
-    //         const response = await tourismApi.createRoute(formFields);
-    //         console.log("Route created successfully:", response);
-    //         setFormFields({
-    //             routeName: "",
-    //             routeDescription: "",
-    //             coordinates: [{ latitude: "", longitude: "" }]
-    //         });
-    //     } catch (error) {
-    //         console.error('Form submission failed:', error);
-    //     }
-    // };
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             // Prepare the coordinates for submission
-            const coordinates = formFields.coordinates.map(coord => [coord.latitude, coord.longitude]);
+            const coordinates = formFields.coordinates.map(coord => ({
+                latitude: coord.latitude,
+                longitude: coord.longitude
+            }));
             //await Route.createRoute(formFields.routeName, formFields.routeDescription, coordinates);
             const route = new Route(formFields.routeName, formFields.routeDescription, coordinates);
             route.displayInfo();
+            await route.createNew();
             // Reset the form fields
             setFormFields({
                 routeName: "",

@@ -11,6 +11,7 @@ public class Route {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
     private String name;
+    private String about;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
     @JoinTable(
@@ -21,12 +22,21 @@ public class Route {
     public Route(){
 
     }
-    public Route(String name){
+    public Route(String name, String about){
         this.name = name;
+        this.about=about;
     }
     public Integer getId() {
         return id;
     };
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
 
     public void setId(Integer id) {
         this.id = id;

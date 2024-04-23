@@ -1,5 +1,6 @@
 import {tourismApi} from "../components/misc/TourismApi.jsx";
 
+
 export class Route {
     constructor(name, about, locations) {
         this.name = name;
@@ -12,17 +13,8 @@ export class Route {
         console.log(this);
     }
 
-    async createNew() {
+    async createNew(user) {
         try {
-            //TODO
-            //SITAIS TIKAI PRIEKS TESTESANAS, JANOMAINA LAI TAS JAU IR FORMA
-            let i = 1;
-            this.locations.forEach(coordinate => {
-                coordinate.name = `Location ${i}`
-                i++
-            })
-            // Check if the route meets requirements (you can add your own validation logic here)
-
             // Prepare route data to send to the API
             const routeData = {
                 name: this.name,
@@ -31,7 +23,7 @@ export class Route {
             };
 
             // Call the API to create the route
-            const response = await tourismApi.createRoute(routeData);
+            const response = await tourismApi.createRoute(routeData, user);
 
             // Log the response
             console.log("Route created successfully:", response.data);

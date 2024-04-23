@@ -2,8 +2,7 @@ import { useState } from "react";
 import { tourismApi } from "../misc/TourismApi.jsx";
 
 
-//TODO
-//Jāpieliek, lai parāda datus no datubāzes ierakstam, kuru vēlamies uzlabot
+
 export default function RouteUpdate({ routeId }) {
     const [formFields, setFormFields] = useState({
         routeName: "",

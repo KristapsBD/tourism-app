@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { tourismApi } from "../misc/TourismApi.jsx";
+import {useAuth} from "../../context/AuthContext.jsx";
+import {Route} from "../../models/Route.js";
 
 
-
-export default function RouteUpdate({ routeId }) {
+//TODO
+//jāsakārto, lai padod to id kuru grib editot
+export default function RouteUpdate() {
+    const routeId = 1;
+    const Auth = useAuth()
     const [formFields, setFormFields] = useState({
         routeName: "",
         routeDescription: "",
-        coordinates: [{ latitude: "", longitude: "" }]
+        coordinates: [{ name: "", latitude: "", longitude: "" }]
     });
     const [formErrors, setFormErrors] = useState({
         errorMsg: "",
@@ -15,6 +20,36 @@ export default function RouteUpdate({ routeId }) {
     const isSubmittable =
         Object.values(formFields).every((field) => field !== "") &&
         Object.values(formErrors).every((error) => error === "");
+
+
+
+    useEffect(() => {
+        const fetchDataAndPopulateForm = async () => {
+            try {
+                // Ensure Auth object exists and user is available
+                if (Auth && Auth.user) {
+                    const response = await tourismApi.getRoute(routeId, Auth.user);
+                    const routeData = response.data;
+
+                    // Populate form fields with route data
+                    setFormFields({
+                        routeName: routeData.name,
+                        routeDescription: routeData.about,
+                        coordinates: routeData.locations.map(location => ({
+                            name: location.name,
+                            latitude: location.latitude,
+                            longitude: location.longitude
+                        }))
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching route data:', error);
+            }
+        };
+
+        fetchDataAndPopulateForm();
+    }, [routeId, Auth]);
+
 
     const handleTextFieldChange = (e) => {
         const { name, value } = e.target;
@@ -49,15 +84,21 @@ export default function RouteUpdate({ routeId }) {
     const handleAddCoordinate = () => {
         setFormFields((prev) => ({
             ...prev,
-            coordinates: [...prev.coordinates, { latitude: "", longitude: "" }]
+            coordinates: [...prev.coordinates, { name: "", latitude: "", longitude: "" }]
         }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await tourismApi.updateRoute(routeId, formFields);
-            console.log("Route updated successfully:", response);
+            const coordinates = formFields.coordinates.map(coord => ({
+                name: coord.name,
+                latitude: coord.latitude,
+                longitude: coord.longitude
+            }));
+            const route = new Route(formFields.routeName, formFields.routeDescription, coordinates);
+            route.displayInfo();
+            await route.updateRoute(routeId, Auth.user);
         } catch (error) {
             console.error('Form submission failed:', error);
         }
@@ -65,7 +106,7 @@ export default function RouteUpdate({ routeId }) {
 
     return (
         <div className="flex h-screen justify-center items-center bg-gray-200">
-            <div className="max-w-lg bg-white p-8 rounded-lg shadow-md">
+            <div className="max-w-lg bg-white p-8 rounded-lg shadow-md" style={{ maxHeight: '80vh', overflowY: 'auto' }}>
                 <h1 className="text-2xl mb-4 text-center">Update Route</h1>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
@@ -97,11 +138,19 @@ export default function RouteUpdate({ routeId }) {
                             <div key={index} className="flex items-center mb-2">
                                 <input
                                     type="text"
+                                    name="name"
+                                    placeholder="Location name"
+                                    value={coordinate.name}
+                                    onChange={(e) => handleCoordinateChange(e, index)}
+                                    className="w-1/3 px-3 py-2 border rounded-md focus:outline-none"
+                                />
+                                <input
+                                    type="text"
                                     name="latitude"
                                     placeholder="Latitude"
                                     value={coordinate.latitude}
                                     onChange={(e) => handleCoordinateChange(e, index)}
-                                    className="w-1/2 px-3 py-2 border rounded-md focus:outline-none"
+                                    className="w-1/3 px-3 py-2 border rounded-md focus:outline-none"
                                 />
                                 <input
                                     type="text"
@@ -109,11 +158,10 @@ export default function RouteUpdate({ routeId }) {
                                     placeholder="Longitude"
                                     value={coordinate.longitude}
                                     onChange={(e) => handleCoordinateChange(e, index)}
-                                    className="w-1/2 px-3 py-2 border rounded-md focus:outline-none"
+                                    className="w-1/3 px-3 py-2 border rounded-md focus:outline-none"
                                 />
                             </div>
                         ))}
-                        {/* Render the button outside of the map function */}
                         <div className="flex items-center">
                             <button
                                 type="button"

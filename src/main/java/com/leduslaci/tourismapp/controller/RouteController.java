@@ -30,8 +30,27 @@ public class RouteController {
     }
     @PostMapping("/create")
     public Route createRoute(@RequestBody Route routeData) {
-
         return routeRepo.save(routeData);
+    }
+    @PostMapping("/update/{routeId}")
+    public Route updateRoute(@PathVariable(name = "routeId") Integer routeId, @RequestBody Route updatedData) {
+        // Retrieve the existing route from the database
+        Route existingRoute = routeRepo.findById(routeId).orElse(null);
 
+        if (existingRoute != null) {
+            // Update the existing route with the updated data
+            // Assuming Route class has appropriate setters for the fields to be updated
+            existingRoute.setName(updatedData.getName());
+            existingRoute.setAbout(updatedData.getAbout());
+            existingRoute.setLocations(updatedData.getLocations());
+
+            // Save the updated route to the database
+            return routeRepo.save(existingRoute);
+        } else {
+            // Handle the case where the route with the provided ID does not exist
+            // You can throw an exception or return an appropriate response based on your application's logic
+            // For simplicity, I'm returning null here
+            return null;
+        }
     }
 }

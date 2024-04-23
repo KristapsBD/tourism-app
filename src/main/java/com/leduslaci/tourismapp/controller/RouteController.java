@@ -1,9 +1,12 @@
 package com.leduslaci.tourismapp.controller;
 
 
+import com.leduslaci.tourismapp.models.Location;
 import com.leduslaci.tourismapp.models.Route;
 import com.leduslaci.tourismapp.repositories.RouteRepository;
 
+import com.leduslaci.tourismapp.service.LocationService;
+import com.leduslaci.tourismapp.service.RouteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +29,9 @@ public class RouteController {
         return routeRepo.findById(id).orElse(null);
     }
     @PostMapping("/create")
-    public Route createRoute(@RequestBody Route route) {
-        //return routeRepo.save(route);
-        return route;
+    public Route createRoute(@RequestBody Route routeData) {
+
+        return routeRepo.save(routeData);
+
     }
 }

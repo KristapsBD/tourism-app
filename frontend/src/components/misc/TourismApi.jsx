@@ -11,7 +11,11 @@ export const tourismApi = {
     getBooks,
     deleteBook,
     addBook,
-    getRoute
+    getRoute,
+
+    //
+    createRoute,
+    updateRoute
 }
 
 function authenticate(username, password) {
@@ -76,6 +80,24 @@ function getRoute(id, user){
             'Authorization': basicAuth(user)
         }
     })
+}
+
+function createRoute(routeData, user) {
+    return instance.post('/route/create', routeData, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': basicAuth(user)
+        }
+    });
+}
+
+function updateRoute(routeID, updatedData, user) {
+    return instance.post(`/route/update/${routeID}`, updatedData, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': basicAuth(user)
+        }
+    });
 }
 // -- Axios
 

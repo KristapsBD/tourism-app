@@ -33,7 +33,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         }
         // Populate users
         USERS.forEach(userService::saveUser);
-        Route route = new Route("Route1");
+        Route route = new Route("Route1", "About1");
         routeService.saveRoute(route);
         // Populate locations and associate them with the route
         List<Location> savedLocations = new ArrayList<>();

@@ -13,8 +13,8 @@ export default function kgzTest(){
         //<RouteUpdate/>
         //<TaskCreate/>
         //<RouteUpdate/>
-        <TaskCreate locationID={1}/>
-        //<TaskUpdate/>
+        //<TaskCreate locationID={1}/>
+        <TaskUpdate taskId={1}/>
         //<RouteIdeaSubmission/>
         //<TaskIdeaSubmission/>
         //<TaskAnswer/>

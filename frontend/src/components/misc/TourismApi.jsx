@@ -16,7 +16,9 @@ export const tourismApi = {
     //
     createRoute,
     updateRoute,
-    createTask
+    createTask,
+    getTask,
+    updateTask
 }
 
 function authenticate(username, password) {
@@ -93,7 +95,7 @@ function createRoute(routeData, user) {
 }
 
 
-function updateRoute(routeID, updatedData, user) {
+function updateRoute(routeID,updatedData , user) {
     return instance.post(`/route/update/${routeID}`, updatedData, {
         headers: {
             'Content-Type': 'application/json',
@@ -102,10 +104,27 @@ function updateRoute(routeID, updatedData, user) {
     });
 }
 
+function getTask(taskID, user){
+    return instance.get(`/task/get/${taskID}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': basicAuth(user)
+        }
+    });
+}
 
 //ID ir konkretas lokacijas id
 function createTask(taskData, user, id) {
     return instance.post(`/location/${id}/task/create`, taskData, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': basicAuth(user)
+        }
+    });
+}
+
+function updateTask(taskID,updatedData , user) {
+    return instance.post(`/task/${taskID}/update`, updatedData, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': basicAuth(user)

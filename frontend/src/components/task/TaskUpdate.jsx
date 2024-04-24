@@ -1,10 +1,13 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { tourismApi } from "../misc/TourismApi.jsx";
+import {Task} from "../../models/Task.js";
+import {useAuth} from "../../context/AuthContext.jsx";
 
-export default function TaskUpdate({ taskId, initialTaskText, initialTaskAnswer }) {
+export default function TaskUpdate({ taskId }) {
+    const Auth = useAuth()
     const [formFields, setFormFields] = useState({
-        taskText: initialTaskText,
-        taskAnswer: initialTaskAnswer
+        taskText: "",
+        taskAnswer: ""
     });
     const [formErrors, setFormErrors] = useState({
         errorMsg: "",
@@ -13,6 +16,26 @@ export default function TaskUpdate({ taskId, initialTaskText, initialTaskAnswer 
         Object.values(formFields).every((field) => field !== "") &&
         Object.values(formErrors).every((error) => error === "");
 
+    useEffect(() => {
+        const fetchDataAndPopulateForm = async () => {
+            try {
+                // Ensure Auth object exists and user is available
+                if (Auth && Auth.user) {
+                    const response = await tourismApi.getTask(taskId, Auth.user);
+                    const taskData = response.data;
+                    console.log(response)
+                    // Populate form fields with route data
+                    setFormFields({
+                        taskText: taskData.task,
+                        taskAnswer: taskData.answer
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching route data:', error);
+            }
+        }
+         fetchDataAndPopulateForm();
+    }, [taskId, Auth]);
     const handleTextFieldChange = (e) => {
         const { name, value } = e.target;
         setFormFields((prev) => ({
@@ -28,8 +51,9 @@ export default function TaskUpdate({ taskId, initialTaskText, initialTaskAnswer 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await tourismApi.updateTask(taskId, formFields);
-            console.log("Task updated successfully:", response);
+            const task = new Task(formFields.taskText, formFields.taskAnswer)
+            task.displayInfo();
+            await task.updateTask(taskId, Auth.user);
         } catch (error) {
             console.error('Form submission failed:', error);
         }

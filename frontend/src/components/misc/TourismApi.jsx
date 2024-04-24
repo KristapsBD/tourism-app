@@ -14,7 +14,8 @@ export const tourismApi = {
     getRoute,
 
     //
-    createRoute
+    createRoute,
+    updateRoute
 }
 
 function authenticate(username, password) {
@@ -80,10 +81,18 @@ function getRoute(id, user){
         }
     })
 }
-///TODO
-// man nestrādāja tā rindiņa ar 'Authorization': basicAuth(user) hvz
+
 function createRoute(routeData, user) {
     return instance.post('/route/create', routeData, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': basicAuth(user)
+        }
+    });
+}
+
+function updateRoute(routeID, updatedData, user) {
+    return instance.post(`/route/update/${routeID}`, updatedData, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': basicAuth(user)

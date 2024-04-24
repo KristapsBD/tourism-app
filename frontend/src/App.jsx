@@ -12,10 +12,15 @@ function App() {
     const Auth = useAuth()
     return (
             <Routes>
+                //Login
                 <Route path='/login' element={<Login/>}/>
+                //Homepage
                 <Route path={'/'} element={Auth.userIsAuthenticated() ? <Home/> : <Navigate to="/login"/>}/>
+                //Test route for map rendering
                 <Route path={'/map'} element={Auth.userIsAuthenticated() ? <MapTest/>:<Navigate to="/login"/>}/>
+                //Test route for forms and other components
                 <Route path={'/test'} element={Auth.userIsAuthenticated() ? <KgzTest/>:<Navigate to="/login"/>}/>
+
             </Routes>
     )
 }

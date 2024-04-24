@@ -18,6 +18,18 @@ public class Location {
             joinColumns = @JoinColumn(name = "location_id"),
             inverseJoinColumns = @JoinColumn(name = "route_id"))
     private List<Route> routes;
+
+    @OneToOne(mappedBy = "location", cascade = CascadeType.ALL)
+    private Task task=null;
+
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
+    }
+
     public Location() {
     }
     public Location(String name, Double latitude, Double longitude){

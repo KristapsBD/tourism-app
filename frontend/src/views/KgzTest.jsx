@@ -10,9 +10,11 @@ import GameTimeForm from "../components/game/GameTime.jsx";
 export default function kgzTest(){
     return (
         //<RouteCreate/>
-        <RouteUpdate/>
+        //<RouteUpdate/>
         //<TaskCreate/>
-        //<TaskUpdate/>
+        //<RouteUpdate/>
+        //<TaskCreate locationID={1}/>
+        <TaskUpdate taskId={1}/>
         //<RouteIdeaSubmission/>
         //<TaskIdeaSubmission/>
         //<TaskAnswer/>

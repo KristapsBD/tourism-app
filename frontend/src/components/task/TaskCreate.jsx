@@ -1,7 +1,10 @@
 import { useState } from "react";
+import {Task} from "../../models/Task.js";
 import { tourismApi } from "../misc/TourismApi.jsx";
-
-export default function TaskCreate() {
+import {useAuth} from "../../context/AuthContext.jsx";
+//LocationID jāpadod
+export default function TaskCreate({locationID}) {
+    const Auth = useAuth()
     const [formFields, setFormFields] = useState({
         taskText: "",
         taskAnswer: ""
@@ -28,8 +31,11 @@ export default function TaskCreate() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await tourismApi.createTask(formFields);
-            console.log("Task created successfully:", response);
+            const task = new Task(formFields.taskText, formFields.taskAnswer)
+            task.displayInfo()
+            //TODO
+            //Neiet, jo jaizdoma ka pados id par lokaciju
+            await task.createNew(Auth.user, locationID)
             // Clear the form fields after submission
             setFormFields({
                 taskText: "",
@@ -58,7 +64,7 @@ export default function TaskCreate() {
                         ></textarea>
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="taskAnswer" className="block mb-1">Task Answer</label>
+                        <label htmlFor="taskAnswer" className="block mb-1">Task Correct Answer</label>
                         <input
                             type="text"
                             id="taskAnswer"

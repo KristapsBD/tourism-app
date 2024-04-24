@@ -18,16 +18,14 @@ public class Task {
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
-
-    private Location location;
+    private Location location=null;
 
     public Task() {
     }
 
-    public Task(String task, String answer, Location location) {
+    public Task(String task, String answer) {
         this.task = task;
         this.answer = answer;
-        this.location = location;
     }
 
     public Integer getId() {

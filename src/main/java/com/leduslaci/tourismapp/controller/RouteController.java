@@ -21,8 +21,9 @@ public class RouteController {
 
     @GetMapping("/get/{id}")
     public Route getRoute(@PathVariable(name = "id") Integer id) {
-        return new Route("route 1");
-        //return routeRepo.findById(id).orElse(null);
+        //return new Route("route 1");
+
+        return routeRepo.findById(id).orElse(null);
     }
 
 }

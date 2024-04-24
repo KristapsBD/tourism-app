@@ -18,7 +18,8 @@ public class Location {
             joinColumns = @JoinColumn(name = "location_id"),
             inverseJoinColumns = @JoinColumn(name = "route_id"))
     private List<Route> routes;
-
+    public Location() {
+    }
     public Location(String name, Double latitude, Double longitude){
         this.name = name;
         this.latitude = latitude;
